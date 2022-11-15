@@ -5,7 +5,7 @@ import seaborn as sns
 import matplotlib.pyplot as plt
 
 
-def load_single_timeseries(subject, experiment, bold_run, remove_mean=True):
+def load_single_timeseries(subject, experiment, bold_run, datapath,remove_mean=True):
   """Load timeseries data for a single subject and single run.
 
   Args:
@@ -19,13 +19,13 @@ def load_single_timeseries(subject, experiment, bold_run, remove_mean=True):
 
   """
   
-  bold_path = f"subjects/{subject}/{experiment}/tfMRI_{experiment}_{bold_run}"
+  bold_path = datapath+f"subjects/{subject}/{experiment}/tfMRI_{experiment}_{bold_run}"
   bold_file = "data.npy"
   ts = np.load(f"{bold_path}/{bold_file}")
   return ts
 
 
-def load_evs(subject, experiment, conditions,bold_run):
+def load_evs(subject, experiment, conditions,bold_run,datapath):
   """Load EVs (explanatory variables) data for one task experiment.
 
   Args:
@@ -41,7 +41,7 @@ def load_evs(subject, experiment, conditions,bold_run):
   task_key = f'tfMRI_{experiment}_{bold_run}'
   TR = 0.72
   for cond in conditions:
-    ev_file  = f"subjects/{subject}/{experiment}/{task_key}/EVs/{cond}.txt"
+    ev_file  = datapath+f"subjects/{subject}/{experiment}/{task_key}/EVs/{cond}.txt"
     ev_array = np.loadtxt(ev_file, ndmin=2, unpack=True)
     ev       = dict(zip(["onset", "duration", "amplitude"], ev_array))
     # Determine when trial starts, rounded down
